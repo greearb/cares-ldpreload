@@ -1,5 +1,11 @@
+# This expects to be built within LANforge 3plibs dir, with locally built
+# cares.
+
+CARES_I=-I../../l4libs/c-ares.ct/include
+CARES_L=../../l4libs/c-ares.ct/.libs/libcares.a
+
 intercept.so: intercept.c
-	gcc -ggdb3 -Wall -fPIC -shared -o intercept.so intercept.c -lcares
+	gcc -ggdb3 $(CARES_I) -Wall -fPIC -shared -o intercept.so intercept.c $(CARES_L)
 
 check:
 	LD_PRELOAD=./intercept.so  ping -c1 -v google.com
