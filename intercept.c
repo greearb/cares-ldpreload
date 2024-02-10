@@ -43,7 +43,7 @@ static void ai_callback(void *arg, int status, int timeouts,
 
     if (status != ARES_SUCCESS) {
         if (getenv("DEBUG")) {
-            fprintf(stderr, __FILE__ ": %s: %s\n", (char *)arg, ares_strerror(status));
+            fprintf(stderr, __FILE__ ":%d ai-callback failed: %s\n", __LINE__, ares_strerror(status));
         }
         return;
     }
@@ -74,7 +74,7 @@ static void ai_callback(void *arg, int status, int timeouts,
         }
         ares_inet_ntop(node->ai_family, ptr, addr_buf, sizeof(addr_buf));
         if (getenv("DEBUG")) {
-            printf(__FILE__ ": %-32s\t%s\n", result->name, addr_buf);
+            printf(__FILE__ ":%d %-32s\t%s\n", __LINE__, result->name, addr_buf);
         }
     }
 
@@ -129,7 +129,7 @@ int getaddrinfo(const char *restrict libc_node,
             ares_set_local_ip4(channel, ntohl(binary_address_ip4.s_addr));
         } else {
             if (getenv("DEBUG")) {
-                fprintf(stderr, __FILE__ ": inet_pton(%s) failed\n", local_ip4);
+                fprintf(stderr, __FILE__ ":%d inet_pton(%s) failed\n", __LINE__, local_ip4);
             }
         }
     }
@@ -141,7 +141,7 @@ int getaddrinfo(const char *restrict libc_node,
             ares_set_local_ip6(channel, (const unsigned char*)&binary_address_ip6);
         } else {
             if (getenv("DEBUG")) {
-                fprintf(stderr, __FILE__ ": inet_pton(%s) failed\n", local_ip4);
+                fprintf(stderr, __FILE__ ":%d inet_pton(%s) failed\n", __LINE__, local_ip4);
             }
         }
     }
@@ -150,7 +150,7 @@ int getaddrinfo(const char *restrict libc_node,
         r = ares_set_servers_csv(channel, servers_csv);
         if (r != ARES_SUCCESS) {
             if (getenv("DEBUG")) {
-                fprintf(stderr, __FILE__ ": ares_set_servers_csv(%s) failed: %d\n", servers_csv, r);
+                fprintf(stderr, __FILE__ ":%d ares_set_servers_csv(%s) failed: %d\n", __LINE__, servers_csv, r);
             }
         }
     }

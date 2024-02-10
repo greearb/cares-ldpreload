@@ -2,12 +2,15 @@
 # cares.
 
 CARES_I=-I../../l4libs/c-ares.ct/include
-CARES_L=../../l4libs/c-ares.ct/lib/libcares.so
+CARES_LP=../../l4libs/c-ares.ct/lib
+CARES_L=$(CARES_LP)/libcares.so
 
 intercept.so: intercept.c
 	gcc -ggdb3 $(CARES_I) -Wall -fPIC -shared -o intercept.so intercept.c $(CARES_L)
 
 check:
+	# Run this before running this check.
+	#export LD_LIBRARY_PATH=CARES_LP:../../l4libs/c-ares.ct/lib
 	LD_PRELOAD=./intercept.so  ping -c1 -v google.com
 	DEBUG=1 LOCAL_IP4=127.0.0.1 LD_PRELOAD=./intercept.so  ping -c1 -v google.com
 	DEBUG=1 LOCAL_IP4=127.0.0.1 LD_PRELOAD=./intercept.so  ping -c1 -v -4 google.com
