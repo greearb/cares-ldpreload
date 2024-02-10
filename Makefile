@@ -2,7 +2,7 @@
 # cares.
 
 CARES_I=-I../../l4libs/c-ares.ct/include
-CARES_L=../../l4libs/c-ares.ct/lib/libcares.a
+CARES_L=../../l4libs/c-ares.ct/lib/libcares.so
 
 intercept.so: intercept.c
 	gcc -ggdb3 $(CARES_I) -Wall -fPIC -shared -o intercept.so intercept.c $(CARES_L)
