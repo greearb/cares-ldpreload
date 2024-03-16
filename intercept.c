@@ -116,6 +116,17 @@ int getaddrinfo(const char *restrict libc_node,
     if (name_override && name_override[0] != '\0') {
         libc_node = name_override;
     }
+    if (libc_node == NULL) {
+        // replace with empty address, as null ptr is not handled by ares_getaddrinfo()
+        if (hints.ai_family == AF_INET) {
+            libc_node = "0.0.0.0";
+        } else {
+            libc_node = "::";
+        }
+        if (getenv("DEBUG")) {
+            fprintf(stderr, __FILE__ ":%d Replaced the null libc_node arg with '%s'.\n", __LINE__, libc_node);
+        }
+    }
     const char* local_dev_name = getenv("LOCAL_DEV");
     if (local_dev_name) {
         // requires root privileges, failure to apply is silently ignored
